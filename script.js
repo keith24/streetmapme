@@ -5,14 +5,16 @@ var pano, newLoc;
 
 // Create panorama
 function init(){
-	pano = new google.maps.StreetViewPanorama(document.getElementsByTagName('main')[0], {
-		panControl: false,
-		zoomControl: false,
-		addressControl: false,
-		linksControl: false,
-		motionTracking: false,
-		motionTrackingControl: false
-	});
+	pano = new google.maps.StreetViewPanorama(
+		document.getElementsByTagName('main')[0], {
+			panControl: false,
+			zoomControl: false,
+			addressControl: false,
+			linksControl: false,
+			motionTracking: false,
+			motionTrackingControl: false
+		}
+	);
 }
 
 // Get street view imagery
@@ -38,7 +40,9 @@ function getStreetViewData(loc,rad,cb) {
 				break;
 			// Error
 			default:
-				console.error(new Error('❌️ Street view not available: '+status).message);
+				console.error(new Error(
+					'❌️ Street view not available: '+status
+				).message);
 		} });
 	}
 }
@@ -54,12 +58,26 @@ function updateStreetView(loc){
 	
 	// Panorma has loaded
 	else {
-		// Set panorama
+		
+		// Get streetview data
 		getStreetViewData(loc, 2, function(data){
+			
+			// Calculate bearing
+			var brng;
+			
+			if (loc.spd>1){
+				brng = loc.dir;
+			}
+			else { //https://stackoverflow.com/a/26609687/3006854
+				brng = Math.atan2( loc.lat-data.location.latLng.lat(), loc.lon-data.location.latLng.lng() );
+				brng = 450-(brng*(180/Math.PI)+360)%360;
+			}
+
+			// Set panorama
 			pano.setPano(data.location.pano);				
 			pano.setPov({
 				pitch: 0,
-				heading: (loc.spd>1)?loc.dir:Math.atan((loc.lon-data.location.latLng.lng())/(loc.lat-data.location.latLng.lat()))*(180/Math.PI)
+				heading: brng
 			});
 		});
 		
