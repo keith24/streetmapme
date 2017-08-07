@@ -106,8 +106,9 @@ if (!navigator.geolocation){
 		},
 		
 		// Got error
-		function() {
+		function(err) {
 			alert("No geolocation position available!");
+			console.error(err);
 		}, 
 		
 		// Options
