@@ -107,8 +107,19 @@ if (!navigator.geolocation){
 		
 		// Got error
 		function(err) {
-			alert("No geolocation position available!");
-			console.error(err);
+			console.error(err.message);
+			if (err.code==1) {
+				alert("You can't use this app without granting permission to access your location");
+			}
+			else if (err.code==2) {
+				alert("Location data not available.");
+			}
+			else if (err.code==3) {
+				alert("Timed out trying to determine location.");
+			}
+			else {
+				alert("An unknown error occured while trying to determine location.");
+			}
 		}, 
 		
 		// Options
