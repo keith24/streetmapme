@@ -1,7 +1,7 @@
-# Streetme
+# Streetmap.me
 ###### by [Keith Irwin](https://keithirwin.us/)
 
-Streetme is a web app written in plain HTML/CSS/JS.  It uses [geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation) and [google street view](https://developers.google.com/maps/documentation/javascript/streetview) to show a panoramic image of your current location.  
+Streetmap.me) is a web app written in plain HTML/CSS/JS.  It uses [geolocation](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation) and [google street view](https://developers.google.com/maps/documentation/javascript/streetview) to show a panoramic image of your current location.  
 
 ## Instructions
 
