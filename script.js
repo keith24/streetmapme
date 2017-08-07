@@ -4,6 +4,18 @@
 var pano, newLoc;
 const main = document.getElementsByTagName('main')[0];
 
+// Create panorama
+function init(){
+	pano = new googlemaps.StreetViewPanorama(main, {
+		panControl: false,
+		zoomControl: false,
+		addressControl: false,
+		linksControl: false,
+		motionTracking: false,
+		motionTrackingControl: false
+	});
+}
+
 // Get street view imagery
 function getStreetViewData(loc,rad,cb) {
 	// Ensure that the location hasn't changed (or this is the initial setting)
@@ -32,30 +44,23 @@ function getStreetViewData(loc,rad,cb) {
 	}
 }
 
+// Update street view image
 function updateStreetView(loc){
 	
-	// Create panorama
-	if ( typeof pano == 'undefined' ){
-		$('main').empty();
-		pano = new googlemaps.StreetViewPanorama(main, {
-			panControl: false,
-			zoomControl: false,
-			addressControl: false,
-			linksControl: false,
-			motionTracking: false,
-			motionTrackingControl: false
+	// Wait for panorama
+	if ( typeof pano != 'undefined' ){
+		
+		// Set panorama
+		getStreetViewData(loc, 2, function(data){
+			pano.setPano(data.location.pano);							
+			pano.setPov({
+				pitch: 0,
+				// Point towards users's location from street
+				heading: Math.atan((loc.lon-data.location.latLng.lng())/(loc.lat-data.location.latLng.lat()))*(180/Math.PI)
+			});
 		});
+		
 	}
-	
-	// Set panorama
-	getStreetViewData(loc, 2, function(data){
-		pano.setPano(data.location.pano);							
-		pano.setPov({
-			pitch: 0,
-			// Point towards users's location from street
-			heading: Math.atan((loc.lon-data.location.latLng.lng())/(loc.lat-data.location.latLng.lat()))*(180/Math.PI)
-		});
-	});
 	
 }
 
