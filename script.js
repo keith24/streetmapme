@@ -1,12 +1,12 @@
 'use strict';
-/* global navigator googlemaps $ */
+/* global navigator google */
 
 var pano, newLoc;
 const main = document.getElementsByTagName('main')[0];
 
 // Create panorama
 function init(){
-	pano = new googlemaps.StreetViewPanorama(main, {
+	pano = new google.maps.StreetViewPanorama(main, {
 		panControl: false,
 		zoomControl: false,
 		addressControl: false,
@@ -20,7 +20,7 @@ function init(){
 function getStreetViewData(loc,rad,cb) {
 	// Ensure that the location hasn't changed (or this is the initial setting)
 	if ( newLoc == null || loc.tim===newLoc.tim ) {
-		if (!sv) { var sv=new googlemaps.StreetViewService(); }
+		if (!sv) { var sv=new google.maps.StreetViewService(); }
 		sv.getPanorama({
 			location: {
 				lat: loc.lat,
@@ -29,11 +29,11 @@ function getStreetViewData(loc,rad,cb) {
 			radius: rad
 		}, function(data,status){ switch (status){
 			// Success
-			case googlemaps.StreetViewStatus.OK:
+			case google.maps.StreetViewStatus.OK:
 				cb(data);
 				break;
 			// No results in that radius
-			case googlemaps.StreetViewStatus.ZERO_RESULTS:
+			case google.maps.StreetViewStatus.ZERO_RESULTS:
 				// Try again with a bigger radius
 				getStreetViewData(loc,rad*2,cb);
 				break;
