@@ -52,11 +52,10 @@ function updateStreetView(loc){
 		
 		// Set panorama
 		getStreetViewData(loc, 2, function(data){
-			pano.setPano(data.location.pano);							
+			pano.setPano(data.location.pano);				
 			pano.setPov({
 				pitch: 0,
-				// Point towards users's location from street
-				heading: Math.atan((loc.lon-data.location.latLng.lng())/(loc.lat-data.location.latLng.lat()))*(180/Math.PI)
+				heading: (loc.spd>1)?loc.dir:Math.atan((loc.lon-data.location.latLng.lng())/(loc.lat-data.location.latLng.lat()))*(180/Math.PI)
 			});
 		});
 		
@@ -73,6 +72,8 @@ else { navigator.geolocation.watchPosition(
 			newLoc = {
 				lat: pos.coords.latitude,
 				lon: pos.coords.longitude,
+				spd: pos.coords.speed,
+				dir: pos.coords.heading,
 				tim: new Date()
 			};
 			updateStreetView(newLoc,10);
