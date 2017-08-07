@@ -86,7 +86,9 @@ function updateStreetView(loc){
 }
 
 // Track GPS location
-if (!navigator.geolocation){ /* Show error */ }
+if (!navigator.geolocation){
+	alert("Geolocation not available!");
+}
 else { navigator.geolocation.watchPosition(
 		
 		// Got location
