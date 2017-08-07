@@ -2,11 +2,10 @@
 /* global navigator google */
 
 var pano, newLoc;
-const main = document.getElementsByTagName('main')[0];
 
 // Create panorama
 function init(){
-	pano = new google.maps.StreetViewPanorama(main, {
+	pano = new google.maps.StreetViewPanorama(document.getElementsByTagName('main')[0], {
 		panControl: false,
 		zoomControl: false,
 		addressControl: false,
@@ -47,9 +46,14 @@ function getStreetViewData(loc,rad,cb) {
 // Update street view image
 function updateStreetView(loc){
 	
-	// Wait for panorama
-	if ( typeof pano != 'undefined' ){
-		
+	// Panorama hasn't loaded
+	if ( typeof pano == 'undefined' ){
+		// Wait one second and try again
+		setTimeout(updateStreetView(loc),1000);
+	}
+	
+	// Panorma has loaded
+	else {
 		// Set panorama
 		getStreetViewData(loc, 2, function(data){
 			pano.setPano(data.location.pano);				
