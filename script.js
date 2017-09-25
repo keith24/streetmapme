@@ -70,7 +70,7 @@ function updateStreetView(loc){
 			}
 			else { //https://stackoverflow.com/a/26609687/3006854
 				brng = Math.atan2( loc.lat-data.location.latLng.lat(), loc.lon-data.location.latLng.lng() );
-				brng = 450-(brng*(180/Math.PI)+360)%360;
+				brng = 90-(brng*(180/Math.PI))%360;
 			}
 
 			// Set panorama
@@ -88,7 +88,10 @@ function updateStreetView(loc){
 // Check for geolocation
 if (!navigator.geolocation){
 	alert("Geolocation not available!");
-} else {
+}
+
+// Has geolocation
+else {
 	
 	// Track geolocation
 	navigator.geolocation.watchPosition(
@@ -108,18 +111,27 @@ if (!navigator.geolocation){
 		// Got error
 		function(err) {
 			console.error(err.message);
+			
+			// Permission denied
 			if (err.code==1) {
 				alert("You can't use this app without granting permission to access your location");
 			}
+			
+			// Location not available
 			else if (err.code==2) {
 				alert("Location data not available.");
 			}
+			
+			// Timeout
 			else if (err.code==3) {
 				alert("Timed out trying to determine location.");
 			}
+			
+			// Other error
 			else {
 				alert("An unknown error occured while trying to determine location.");
 			}
+			
 		}, 
 		
 		// Options
